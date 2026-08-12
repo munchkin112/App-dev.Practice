@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>도서 목록</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 700px;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>도서 목록</h1>
+
+    <button id="loadBtn">목록 불러오기</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>출판연도</th>
+            </tr>
+        </thead>
+
+        <tbody id="result">
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById("loadBtn").addEventListener("click", async () => {
+
+            // FastAPI의 /books에 GET 요청
+            const books = await (await fetch("/books")).json();
+
+            // 데이터를 넣을 tbody 찾기
+            const tbody = document.getElementById("result");
+
+            // 기존 내용 초기화
+            tbody.innerHTML = "";
+
+            // 책 목록을 하나씩 반복
+            for (const book of books) {
+
+                // 새로운 행 생성
+                const tr = document.createElement("tr");
+
+                // 행 안에 데이터 넣기
+                tr.innerHTML = `
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.year}</td>
+                `;
+
+                // 표에 행 추가
+                tbody.appendChild(tr);
+            }
+        });
+    </script>
+</body>
+</html>
