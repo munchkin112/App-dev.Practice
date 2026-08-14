@@ -1,8 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
+from external_api import fetch_books, fetch_weather
+from schemas import BookCreate, BookResponse, GoogleBooks, WeatherResponse
+
 
 app = FastAPI()
-
-from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 books = [
@@ -13,46 +17,77 @@ books = [
     {"id": 5, "title": "FastAPI로 배우는 백엔드", "author": "이영희", "year": 2024},
 ]
 
-@app.get("/")
-def read_root() : # c드라이브보다 상위 폴더가 없기 때문에 root 라고 표현한다(최상위)
-    return {"message": "메인페이지"}
 
-@app.get("/healthy") #데코 healthy는 호출하는 경로(api주소)
-def health() :
-    return {"status" : "healthy"}
+@app.get("/")
+def read_root():
+    return FileResponse("static/index.html")
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 
 @app.get("/info")
 def info():
-    return {"name": "도서 관리 API", "version": "0.1.0"}
+    return {"name": "도서 관리 API", "version": "0.2.0"}
 
 
-
-
-
-
-
-
-
-#도서의 목록을 재공하는 엔드포인트
-@app.get ("/books")
-def list_books() :
+@app.get("/books", response_model=list[BookResponse])
+def list_books():
     return books
 
-#books 안에 search 기능을 넣은거기 때문에 순서를 반드시 맞춰야 된다.
-@app.get("/books/search") 
+
+@app.post(
+    "/books",
+    response_model=BookResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_book(book: BookCreate):
+    for saved_book in books:
+        if saved_book["title"] == book.title:
+            raise HTTPException(status_code=409, detail="중복된 도서입니다.")
+
+    new_book = {"id": max((item["id"] for item in books), default=0) + 1, **book.model_dump()}
+    books.append(new_book)
+    return new_book
+
+
+@app.get("/books/search")
 def search_books(keyword: str = ""):
     if not keyword:
         return books
-    return [b for b in books if keyword in b["title"]]
+    return [book for book in books if keyword in book["title"]]
 
 
+@app.get("/books/filter")
+def filter_books(author: str = "", sort: str = ""):
+    result = books
+    if author:
+        result = [book for book in result if book["author"] == author]
+    if sort == "year":
+        result = sorted(result, key=lambda book: book["year"])
+    return result
 
-@app.get("/books/{book_id}")
-def read_book(book_id : int) :
-    for book in books :
-        if book_id == book["id"] :
+
+@app.get("/books/page")
+def page_books(skip: int = 0, limit: int = 2):
+    return books[skip : skip + limit]
+
+
+@app.get("/books/external", response_model=list[GoogleBooks])
+async def search_external_books(keyword: str, limit: int = 5):
+    return await fetch_books(keyword, limit)
+
+
+@app.get("/books/{book_id}", response_model=BookResponse)
+def read_book(book_id: int):
+    for book in books:
+        if book["id"] == book_id:
             return book
-    return {"error" : "not found"}
+    raise HTTPException(status_code=404, detail="도서를 찾을 수 없습니다")
 
 
-
+@app.get("/weather", response_model=WeatherResponse)
+async def weather(latitude: float = 36.8, longitude: float = 127.1):
+    return await fetch_weather(latitude, longitude)

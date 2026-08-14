@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <title>상세 등록</title>
+</head>
+
+<body class="nested-page">
+    <h1>태그·출판사 포함 등록</h1>
+
+    <input id="title" placeholder="제목">
+    <input id="author" placeholder="저자">
+    <input id="year" type="number" placeholder="연도">
+    <input id="tags" placeholder="태그 (쉼표로 구분)">
+    <input id="pubName" placeholder="출판사 이름 (선택)">
+    <input id="pubCity" placeholder="출판사 도시 (선택)">
+
+    <button id="saveBtn">등록</button>
+
+    <p id="result"></p>
+
+    <h2>도서 목록</h2>
+    <ul id="list"></ul>
+
+    <script>
+        // 도서 목록 불러오기
+        async function loadList() {
+            const books = await (await fetch("/books")).json();
+
+            const ul = document.getElementById("list");
+            ul.innerHTML = "";
+
+            for (const b of books) {
+                let text =
+                    b.id + ". " +
+                    b.title + " - " +
+                    b.author + " (" +
+                    b.year + ")";
+
+                // 태그가 있으면 표시
+                if (b.tags && b.tags.length) {
+                    text += " [" + b.tags.join(", ") + "]";
+                }
+
+                // 출판사 정보가 있으면 표시
+                if (b.publisher) {
+                    text +=
+                        " / " +
+                        b.publisher.name +
+                        " (" +
+                        b.publisher.city +
+                        ")";
+                }
+
+                const li = document.createElement("li");
+                li.textContent = text;
+
+                ul.appendChild(li);
+            }
+        }
+
+
+        // 등록 버튼 클릭
+        document.getElementById("saveBtn").addEventListener(
+            "click",
+            async () => {
+
+                const tagText =
+                    document.getElementById("tags").value;
+
+                const pubName =
+                    document.getElementById("pubName").value;
+
+                const pubCity =
+                    document.getElementById("pubCity").value;
+
+
+                // FastAPI로 보낼 데이터
+                const payload = {
+                    title: document.getElementById("title").value,
+                    author: document.getElementById("author").value,
+                    year: Number(
+                        document.getElementById("year").value
+                    ),
+                    tags: tagText
+                        ? tagText.split(",").map(t => t.trim())
+                        : []
+                };
+
+
+                // 출판사 이름을 입력했을 경우
+                if (pubName) {
+                    payload.publisher = {
+                        name: pubName
+                    };
+
+                    // 출판사 도시도 입력했을 경우
+                    if (pubCity) {
+                        payload.publisher.city = pubCity;
+                    }
+                }
+
+
+                // FastAPI POST /books 요청
+                const res = await fetch("/books", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+
+                // 서버 응답 받기
+                const data = await res.json();
+
+                const result = document.getElementById("result");
+
+                if (res.status === 201) {
+                    let message =
+                        "등록 완료: " +
+                        data.title + " / " +
+                        data.author + " / " +
+                        data.year + "년";
+
+                    if (data.tags && data.tags.length) {
+                        message += " / 태그: " + data.tags.join(", ");
+                    }
+
+                    if (data.publisher) {
+                        message +=
+                            " / 출판사: " +
+                            data.publisher.name +
+                            " (" + data.publisher.city + ")";
+                    }
+
+                    result.style.color = "green";
+                    result.textContent = message;
+                } else {
+                    result.style.color = "red";
+                    result.textContent =
+                        "등록 실패 (상태 " + res.status + "): " +
+                        (data.detail || "알 수 없는 오류");
+                }
+
+
+                // 등록에 성공했을 때만 입력창 초기화 + 목록 갱신
+                if (res.status === 201) {
+                    [
+                        "title",
+                        "author",
+                        "year",
+                        "tags",
+                        "pubName",
+                        "pubCity"
+                    ].forEach(
+                        id => document.getElementById(id).value = ""
+                    );
+
+                    await loadList();
+                }
+            }
+        );
+
+
+        // 페이지가 처음 열릴 때 도서 목록 불러오기
+        loadList();
+    </script>
+</body>
+
+</html>

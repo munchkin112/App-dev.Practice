@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>책갈피 · 도서 관리</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <a class="brand" href="/">책갈피<span>BOOKS</span></a>
+        <nav aria-label="실습 메뉴">
+            <p>둘러보기</p>
+            <a class="active" href="/">대시보드</a>
+            <a href="/static/02-list.html">도서 목록</a>
+            <a href="/static/03-detail.html">도서 조회</a>
+            <a href="/static/04-search.html">제목 검색</a>
+            <a href="/static/05-filter.html">필터 · 정렬</a>
+            <a href="/static/06-page.html">페이지네이션</a>
+            <p>도서 관리</p>
+            <a href="/static/07-create.html">간단 등록</a>
+            <a href="/static/08-validate.html">입력 검증</a>
+            <a href="/static/09-create-list.html">등록 · 목록 갱신</a>
+            <a href="/static/10-detail-404.html">없는 도서 찾기</a>
+            <a href="/static/11-nested.html">상세 도서 등록</a>
+            <a href="/static/12-final.html">통합 등록</a>
+        </nav>
+        <a class="docs-link" href="/docs">API 문서 열기 ↗</a>
+    </aside>
+
+    <main class="dashboard-main">
+        <header class="dashboard-header">
+            <div>
+                <p class="eyebrow">LIBRARY DASHBOARD</p>
+                <h1>도서 관리를 시작해 볼까요?</h1>
+                <p class="page-description">왼쪽 메뉴에서 필요한 기능을 선택해 도서를 조회하고 등록하세요.</p>
+            </div>
+            <a class="primary-link" href="/static/11-nested.html">새 도서 등록</a>
+        </header>
+
+        <section class="summary-grid" aria-label="도서 현황">
+            <article class="summary-card featured">
+                <span>전체 도서</span>
+                <strong id="bookCount">–</strong>
+                <small>현재 등록된 도서 수</small>
+            </article>
+            <article class="summary-card">
+                <span>빠른 작업</span>
+                <strong>등록</strong>
+                <a href="/static/11-nested.html">태그·출판사와 함께 추가하기</a>
+            </article>
+            <article class="summary-card">
+                <span>도움말</span>
+                <strong>API</strong>
+                <a href="/docs">Swagger 문서에서 확인하기</a>
+            </article>
+        </section>
+
+        <section class="quick-section">
+            <div class="section-heading">
+                <div><p class="eyebrow">QUICK START</p><h2>자주 쓰는 기능</h2></div>
+            </div>
+            <div class="quick-grid">
+                <a href="/static/02-list.html"><b>01</b><strong>도서 목록</strong><span>등록된 도서를 한눈에 확인합니다.</span></a>
+                <a href="/static/04-search.html"><b>02</b><strong>도서 검색</strong><span>제목 키워드로 원하는 도서를 찾습니다.</span></a>
+                <a href="/static/11-nested.html"><b>03</b><strong>상세 등록</strong><span>태그와 출판사 정보까지 입력합니다.</span></a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        fetch("/books")
+            .then(response => response.json())
+            .then(books => document.getElementById("bookCount").textContent = books.length + "권")
+            .catch(() => document.getElementById("bookCount").textContent = "–");
+    </script>
+</body>
+</html>
