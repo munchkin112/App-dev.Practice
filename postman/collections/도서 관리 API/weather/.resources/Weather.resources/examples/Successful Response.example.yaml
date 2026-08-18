@@ -1,0 +1,24 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/weather?latitude=36.8&longitude=127.1"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    latitude: "36.8"
+    longitude: "127.1"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "latitude": 3404.2107908772978,
+        "longitude": 5200.029394183605,
+        "temperature": 3681.1673739271823,
+        "time": "string"
+      }
+order: 1000

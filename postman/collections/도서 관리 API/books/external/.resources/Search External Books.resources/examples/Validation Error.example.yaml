@@ -1,0 +1,43 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/books/external?keyword=string&limit=5&fallback=false"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    keyword: string
+    limit: "5"
+    fallback: "false"
+response:
+  statusCode: 422
+  statusText: Unprocessable Entity (WebDAV) (RFC 4918)
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "detail": [
+          {
+            "loc": [
+              "string",
+              9381
+            ],
+            "msg": "string",
+            "type": "string",
+            "input": "",
+            "ctx": {}
+          },
+          {
+            "loc": [
+              "string",
+              "string"
+            ],
+            "msg": "string",
+            "type": "string",
+            "input": "",
+            "ctx": {}
+          }
+        ]
+      }
+order: 2000

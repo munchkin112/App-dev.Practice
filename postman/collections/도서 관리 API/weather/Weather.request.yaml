@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{baseUrl}}/weather?latitude=36.8&longitude=127.1"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  latitude: "36.8"
+  longitude: "127.1"
+settings: {}
+examples: ./.resources/Weather.resources/examples
+order: 1000

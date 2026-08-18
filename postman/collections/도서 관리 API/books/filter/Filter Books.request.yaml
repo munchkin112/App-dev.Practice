@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{baseUrl}}/books/filter?author=&sort="
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  author: ""
+  sort: ""
+settings: {}
+examples: ./.resources/Filter Books.resources/examples
+order: 1000

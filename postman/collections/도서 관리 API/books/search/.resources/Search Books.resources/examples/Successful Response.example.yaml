@@ -1,0 +1,17 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/books/search?keyword="
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    keyword: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: text
+    content: ""
+order: 1000

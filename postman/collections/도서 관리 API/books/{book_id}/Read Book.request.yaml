@@ -1,0 +1,29 @@
+$kind: http-request
+name: Read Book
+url: "{{baseUrl}}/books/:book_id"
+method: GET
+headers:
+  Accept: application/json
+pathVariables:
+  - key: book_id
+    value: "5"
+    description: ""
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"없는 도서는 404이다\", function () {\r
+
+      \    pm.response.to.have.status(404);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"오류 메시지가 있다\", function () {\r
+
+      \    pm.expect(pm.response.json().detail).to.be.a(\"string\");\r
+
+      });"
+    language: text/javascript
+settings: {}
+examples: ./.resources/Read Book.resources/examples
+order: 1000

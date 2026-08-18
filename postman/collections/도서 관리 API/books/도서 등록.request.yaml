@@ -1,0 +1,51 @@
+$kind: http-request
+name: 도서 등록
+description: |-
+  새 도서를 등록합니다.
+
+  - **title**: 1자 이상 100자 이하
+  - **year**: 1900 이상 2100 이하
+  - 같은 제목이 이미 있으면 409를 반환합니다.
+url: "{{baseUrl}}/books"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "title": "{{randomTitle}}",
+      "author": "윤근혁",
+      "year": 2043,
+      "tags": [
+        "string",
+        "string"
+      ],
+      "publisher": {
+        "name": "string",
+        "city": "string"
+      }
+    }
+scripts:
+  - type: beforeRequest
+    code: pm.collectionVariables.set("randomTitle", "테스트도서_" + Date.now());
+    language: text/javascript
+  - type: afterResponse
+    code: "pm.test(\"등록되면 201이다\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"id가 발급된다\", function () {\r
+
+      \    pm.expect(pm.response.json().id).to.be.a(\"number\");\r
+
+      \    });"
+    language: text/javascript
+settings: {}
+examples: ./.resources/도서 등록.resources/examples
+order: 8000
