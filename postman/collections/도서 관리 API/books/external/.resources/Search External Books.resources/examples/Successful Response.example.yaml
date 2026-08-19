@@ -1,0 +1,37 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/books/external?keyword=string&limit=5&fallback=false"
+  method: GET
+  headers:
+    Accept: application/json
+  queryParams:
+    keyword: string
+    limit: "5"
+    fallback: "false"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      [
+        {
+          "title": "string",
+          "authors": [
+            "string",
+            "string"
+          ],
+          "published_date": ""
+        },
+        {
+          "title": "string",
+          "authors": [
+            "string",
+            "string"
+          ],
+          "published_date": ""
+        }
+      ]
+order: 1000

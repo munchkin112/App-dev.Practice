@@ -1,0 +1,4 @@
+name: 도서관리
+values:
+  - key: baseUrl
+    value: ''

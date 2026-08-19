@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/books/search?keyword="
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  keyword: ""
+settings: {}
+examples: ./.resources/Search Books.resources/examples
+order: 1000

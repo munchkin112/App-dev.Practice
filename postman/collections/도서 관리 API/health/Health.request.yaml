@@ -1,0 +1,27 @@
+$kind: http-request
+name: Health
+url: "{{baseUrl}}/health"
+method: GET
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"상태 코드가 200이다\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"status 필드가 ok이다\", function () {\r
+
+      \    const data = pm.response.json();\r
+
+      \    pm.expect(data.status).to.eql(\"ok\");\r
+
+      });"
+    language: text/javascript
+settings: {}
+examples: ./.resources/Health.resources/examples
+order: 1000

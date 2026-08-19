@@ -1,0 +1,41 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/books/from-external"
+  method: POST
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "title": "string",
+        "authors": [
+          "string",
+          "string"
+        ],
+        "published_date": ""
+      }
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      {
+        "title": "string",
+        "author": "string",
+        "year": 2017,
+        "id": 6872,
+        "tags": [
+          "string",
+          "string"
+        ],
+        "publisher": {
+          "name": "string",
+          "city": "string"
+        }
+      }
+order: 1000

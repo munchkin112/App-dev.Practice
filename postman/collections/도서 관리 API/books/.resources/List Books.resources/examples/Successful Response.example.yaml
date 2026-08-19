@@ -1,0 +1,45 @@
+$kind: http-example
+request:
+  url: "{{baseUrl}}/books"
+  method: GET
+  headers:
+    Accept: application/json
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    Content-Type: application/json
+  body:
+    type: json
+    content: |-
+      [
+        {
+          "title": "string",
+          "author": "strin",
+          "year": 2010,
+          "id": 3123,
+          "tags": [
+            "string",
+            "string"
+          ],
+          "publisher": {
+            "name": "string",
+            "city": "string"
+          }
+        },
+        {
+          "title": "string",
+          "author": "string",
+          "year": 1950,
+          "id": 4949,
+          "tags": [
+            "string",
+            "string"
+          ],
+          "publisher": {
+            "name": "string",
+            "city": "string"
+          }
+        }
+      ]
+order: 1000

@@ -1,0 +1,11 @@
+$kind: collection
+name: 도서 관리 API
+description: |-
+  도서를 등록·조회하고 외부 검색으로 정보를 가져오는 API
+
+  Contact Support:
+   Name: 홍길동
+   Email: hong@example.com
+variables:
+  baseUrl: /
+  randomTitle: ""

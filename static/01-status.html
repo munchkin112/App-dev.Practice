@@ -2,28 +2,36 @@
 <html lang="ko">
 <head>
     <meta charset="utf-8">
-    <title>서버 상태</title>
+    <link rel="stylesheet" href="style.css">
+    <title>도서 관리 API 실습</title>
 </head>
-
 <body>
-    <h1>서버 상태</h1>
 
-    <p id="status">확인 중...</p>
-    <p id="info"></p>
+<h1>도서 관리 API 실습</h1>
 
-    <script>
-        async function load() {
-            const health = await (await fetch("/health")).json();
-            const info = await (await fetch("/info")).json();
+<h2>1일차 — 조회</h2>
+<ul>
+    <li><a href="01-status.html">1. 서버 상태</a></li>
+    <li><a href="02-list.html">2. 도서 목록</a></li>
+    <li><a href="03-detail.html">3. 단건 조회</a></li>
+    <li><a href="04-search.html">4. 제목 검색</a></li>
+    <li><a href="05-filter.html">5. 저자 필터·정렬</a></li>
+    <li><a href="06-page.html">6. 페이지네이션</a></li>
+</ul>
 
-            document.getElementById("status").textContent =
-                "상태: " + health.status;
+<h2>2일차 — 등록과 검증</h2>
+<ul>
+    <li><a href="07-create.html">7. 도서 등록 폼</a></li>
+    <li><a href="08-validate.html">8. 검증 오류 표시</a></li>
+    <li><a href="09-create-list.html">9. 등록 후 목록 갱신</a></li>
+    <li><a href="10-detail-404.html">10. 404 구분 처리</a></li>
+    <li><a href="11-nested.html">11. 태그·출판사 입력</a></li>
+    <li><a href="12-final.html">12. 상태 코드 통합 처리</a></li>
+</ul>
 
-            document.getElementById("info").textContent =
-                info.name + " v" + info.version;
-        }
+<p>
+    <a href="/docs">API 자동 문서(Swagger UI) 열기</a>
+</p>
 
-        load();
-    </script>
 </body>
 </html>

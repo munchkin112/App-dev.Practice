@@ -1,0 +1,21 @@
+$kind: http-request
+name: Create From External
+url: "{{baseUrl}}/books/from-external"
+method: POST
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "title": "The World of Physics 2nd Edition5",
+        "authors": [
+            "John Avison"
+        
+      ],
+      "published_date": ""
+    }
+settings: {}
+examples: ./.resources/Create From External.resources/examples
+order: 1000

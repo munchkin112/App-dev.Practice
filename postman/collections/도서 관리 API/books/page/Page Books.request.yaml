@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{baseUrl}}/books/page?skip=0&limit=2"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  skip: "0"
+  limit: "2"
+settings: {}
+examples: ./.resources/Page Books.resources/examples
+order: 1000

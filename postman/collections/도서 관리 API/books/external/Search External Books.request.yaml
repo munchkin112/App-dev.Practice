@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/books/external?keyword=string&limit=5&fallback=false"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  keyword: string
+  limit: "5"
+  fallback: "false"
+settings: {}
+examples: ./.resources/Search External Books.resources/examples
+order: 1000

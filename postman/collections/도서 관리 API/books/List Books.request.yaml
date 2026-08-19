@@ -1,0 +1,38 @@
+$kind: http-request
+name: List Books
+url: "{{baseUrl}}/books?=7"
+method: GET
+headers:
+  Accept: application/json
+queryParams:
+  - key: ""
+    value: "7"
+    disabled: false
+    description: ""
+scripts:
+  - type: afterResponse
+    code: "pm.test(\"상태 코드가 200이다\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"배열이 반환된다\", function () {\r
+
+      \    pm.expect(pm.response.json()).to.be.an(\"array\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"응답이 2초 안에 온다\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(2000);\r
+
+      });"
+    language: text/javascript
+settings: {}
+examples: ./.resources/List Books.resources/examples
+order: 7000
